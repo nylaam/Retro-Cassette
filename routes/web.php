@@ -23,7 +23,7 @@ Route::get('/dashboard', fn () => redirect()->route('shelf.index'))
 Route::middleware('auth')->group(function () {
     Route::get('/shelf', [CassetteController::class, 'index'])->name('shelf.index');
     Route::resource('cassettes', CassetteController::class)
-        ->only(['create', 'store', 'update', 'destroy']);
+        ->only(['create', 'store', 'edit', 'update', 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

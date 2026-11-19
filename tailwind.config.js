@@ -12,8 +12,14 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                cream: '#F5EBD7',
+                ink: '#2B2B2B',
+                lcd: '#1F3D2B',
+                'lcd-text': '#9BE29B',
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                pixel: ['"Press Start 2P"', 'monospace'],
             },
         },
     },

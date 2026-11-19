@@ -10,13 +10,14 @@ use Inertia\Inertia;
 
 class CassetteController extends Controller
 {
-    // Rak kaset milik user yang login (ASC)
+    // Rak kaset milik user yang login, terbaru di depan
     public function index(Request $request)
     {
         $cassettes = $request->user()
             ->cassettes()
             ->withCount('tracks')
             ->latest()
+            ->latest('id') // pembanding kalau dua kaset dibuat di detik yang sama
             ->get();
 
         return Inertia::render('Shelf', ['cassettes' => $cassettes]);
@@ -34,9 +35,17 @@ class CassetteController extends Controller
         return redirect()->route('shelf.index');
     }
 
+    // Halaman edit: form yang sama dengan buat kaset, tapi sudah terisi
+    public function edit(Cassette $cassette)
+    {
+        Gate::authorize('update', $cassette); // bukan pemilik = 403
+
+        return Inertia::render('CassetteForm', ['cassette' => $cassette]);
+    }
+
     public function update(StoreCassetteRequest $request, Cassette $cassette)
     {
-        Gate::authorize('update', $cassette); 
+        Gate::authorize('update', $cassette); // bukan pemilik = 403
 
         $cassette->update($request->validated());
 
@@ -45,7 +54,7 @@ class CassetteController extends Controller
 
     public function destroy(Cassette $cassette)
     {
-        Gate::authorize('delete', $cassette);
+        Gate::authorize('delete', $cassette); // bukan pemilik = 403
 
         $cassette->delete();
 
